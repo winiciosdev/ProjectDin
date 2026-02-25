@@ -1,0 +1,11 @@
+CREATE TABLE card (
+id VARCHAR(36) PRIMARY KEY,
+user_id VARCHAR(255) NOT NULL,
+bank_id VARCHAR(36) NOT NULL,
+name VARCHAR(50) NOT NULL,
+credit_limit NUMERIC(15,2) NOT NULL,
+closing_day INTEGER NOT NULL,
+due_day INTEGER NOT NULL,
+CONSTRAINT fk_card_user FOREIGN KEY (user_id) REFERENCES users (id),
+CONSTRAINT fk_card_bank FOREIGN KEY (bank_id) REFERENCES bank (id)
+);
