@@ -5,12 +5,9 @@ import com.winicios.dev.din.users.dto.UserRequestDTO;
 import com.winicios.dev.din.users.dto.UserResponseDTO;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/auth")
@@ -39,15 +36,10 @@ public class UserController {
 
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponseDTO> handleValidationExceptions(MethodArgumentNotValidException ex) {
-
-        List<String> errors = ex.getBindingResult().getFieldErrors().stream().map(FieldError::getDefaultMessage)
-                .collect(Collectors.toList());
-
-        ErrorResponseDTO errorResponse = new ErrorResponseDTO(errors);
-        return ResponseEntity.badRequest().body(errorResponse);
-
+    @ExceptionHandler(org.springframework.web.server.ResponseStatusException.class)
+    public ResponseEntity<ErrorResponseDTO> handleResponseStatusException(org.springframework.web.server.ResponseStatusException ex) {
+        ErrorResponseDTO errorResponse = new ErrorResponseDTO(List.of(ex.getReason()));
+        return ResponseEntity.status(ex.getStatusCode()).body(errorResponse);
     }
 
 }
