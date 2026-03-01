@@ -39,4 +39,13 @@ public class CardController {
             @AuthenticationPrincipal User loggedUser) {
         return ResponseEntity.ok(cardService.findById(id, loggedUser));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteById(
+            @PathVariable String id,
+            @AuthenticationPrincipal User loggedUser) {
+
+        return ResponseEntity.ok(cardService.deleteById(id, loggedUser));
+
+    }
 }

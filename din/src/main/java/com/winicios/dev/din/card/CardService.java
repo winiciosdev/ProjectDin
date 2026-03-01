@@ -53,4 +53,16 @@ public class CardService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cartão não encontrado ou não pertence ao usuário"));
         return new CardResponseDTO(card);
     }
+
+    public String deleteById(String id, User loggedUser) {
+
+        Card card = cardRepository.findByIdAndUser(id, loggedUser)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cartão não encontrado ou não pertence ao usuário"));
+
+        cardRepository.delete(card);
+
+        String message = "Cartão deletado com sucesso";
+
+        return message;
+    }
 }

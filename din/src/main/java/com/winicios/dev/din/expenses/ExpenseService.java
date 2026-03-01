@@ -1,11 +1,14 @@
 package com.winicios.dev.din.expenses;
 
+import com.winicios.dev.din.bank.dto.BankSummaryDTO;
 import com.winicios.dev.din.card.Card;
 import com.winicios.dev.din.card.CardRepository;
 import com.winicios.dev.din.expenses.dto.ExpenseRequestDTO;
 import com.winicios.dev.din.expenses.dto.ExpenseResponseDTO;
+import com.winicios.dev.din.expenses.dto.MonthlySummaryDTO;
 import com.winicios.dev.din.spendingCategory.SpendingCategory;
 import com.winicios.dev.din.spendingCategory.SpendingCategoryRepository;
+import com.winicios.dev.din.spendingCategory.dto.CategorySummaryDTO;
 import com.winicios.dev.din.users.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -74,5 +77,27 @@ public class ExpenseService {
                 .stream()
                 .map(ExpenseResponseDTO::new)
                 .collect(Collectors.toList());
+    }
+
+    public MonthlySummaryDTO calculateExpensesByMonth(int year, int month, User loggedUser){
+
+        MonthlySummaryDTO response = expenseRepository.getTotalMonthlySummary(loggedUser, month, year);
+
+        return response;
+
+    }
+
+    public List<BankSummaryDTO> calculateExpensesByMonthAndBank(int year, int month, User loggedUser) {
+
+        List<BankSummaryDTO> response = expenseRepository.getSummaryByBank(loggedUser, month, year);
+
+        return response;
+    }
+
+    public List<CategorySummaryDTO> calculateExpensesByMonthAndCategory(int year, int month, User loggedUser) {
+
+        List<CategorySummaryDTO> response = expenseRepository.getSummaryByCategory(loggedUser, month, year);
+
+        return response;
     }
 }
